@@ -16,11 +16,16 @@ import { useTokenList } from '../../contexts/tokenList';
 export const AuctionCountdown = (props: {
   auctionView: AuctionView;
   labels: boolean;
+  wrap: boolean;
 }) => {
   const { auctionView } = props;
   const state = useAuctionCountdown(auctionView);
   const ended = isEnded(state);
 
+  if (props.wrap) {
+    return <WrapLineCountdown state={state} />;
+  }
+  
   if (!props.labels) {
     return <Countdown state={state} />;
   }
@@ -119,28 +124,71 @@ const Countdown = ({ state }: { state?: CountdownState }) => {
       {localState.days > 0 && (
         <Col>
           <div className="cd-number">
-            {localState.days}
-            <span style={{ opacity: 0.5 }}>days</span>
+            {localState.days}d
           </div>
         </Col>
       )}
       <Col>
         <div className="cd-number">
-          {localState.hours}
-          <span style={{ opacity: 0.5 }}>hours</span>
+          {localState.hours}h
         </div>
       </Col>
       <Col>
         <div className="cd-number">
-          {localState.minutes}
-          <span style={{ opacity: 0.5 }}>min</span>
+          {localState.minutes}m
         </div>
       </Col>
       {!localState.days && (
         <Col>
           <div className="cd-number">
-            {localState.seconds}
-            <span style={{ opacity: 0.5 }}>sec</span>
+            {localState.seconds}s
+          </div>
+        </Col>
+      )}
+    </Row>
+  );
+};
+
+const WrapLineCountdown = ({ state }: { state?: CountdownState }) => {
+  let localState = state;
+  if (!localState) {
+    localState = {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+  return (
+    <Row
+      style={{ width: '100%', flexWrap: 'nowrap' }}
+      className={'no-label-cd'}
+    >
+      {localState.days > 0 && (
+        <Col>
+          <div className="flex-column-center cd-number wrap-number">
+            <div className='text-a-center'>{localState.days}</div>
+			<div className='wrap-unit'>Days</div>
+          </div>
+        </Col>
+      )}
+      <Col>
+        <div className="flex-column-center cd-number wrap-number">
+          <div className='text-a-center'>{localState.hours}</div>
+		  <div className='wrap-unit'>Hours</div>
+        </div>
+      </Col>
+      <Col>
+        <div className="flex-column flex-align-center cd-number wrap-number">
+          <div className='text-a-center'>{localState.minutes}</div>
+		  <div className='wrap-unit'>Minutes</div>
+        </div>
+      </Col>
+      {!localState.days && (
+        <Col>
+          <div className="flex-column-center cd-number wrap-number">
+            <div className='text-a-center'>{localState.seconds}</div>
+			<div className='wrap-unit'>Seconds</div>
           </div>
         </Col>
       )}

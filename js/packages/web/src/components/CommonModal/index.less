@@ -1,0 +1,102 @@
+.common-modal-box {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: transparent;
+  cursor: auto;
+  padding-bottom: 0px;
+  .ant-modal-footer {
+    border-top: 0;
+  }
+  .ant-input {
+    border: none;
+  }
+
+  .ant-modal-content {
+    background: #1C212C;
+    border-radius: 12px;
+  }
+
+  .ant-modal-header {
+    border-bottom: 0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 24px;
+    background-color: transparent !important;
+    color: white !important;
+    .ant-modal-title {
+      color: white;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 24px;
+    }
+  }
+
+  .ant-modal-close-x {
+
+    width: fit-content;
+    height: fit-content;
+    margin-right: 24px;
+    margin-top: 8px;
+  }
+
+  .ant-modal-body {
+    background: #2E3547 !important;
+    border-radius: 0 0 12px 12px;
+    .ant-card {
+      background: transparent;
+      border: 0;
+      height: 476px;
+      .ant-card-cover {
+        border-radius: 12px;
+        .card-cover {
+          //background: rgba(255, 255, 255, 0.1);
+          height: 200px;
+          border-radius: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: auto;
+            height: 100%;
+            border-radius: 12px;
+          }
+        }
+      }
+
+      .body-title {
+        font-style: normal;
+        font-size: 18px;
+        line-height: 20px;
+        margin-top: 20px;
+        margin-bottom: 12px;
+        color: white;
+      }
+
+      .body-content {
+        font-style: normal;
+        font-weight: normal;
+        font-size: 16px;
+        line-height: 20px;
+        color: rgba(255, 255, 255, 0.7)
+      }
+
+      .ant-card-body {
+        display: flex;
+        flex-direction: column;
+
+        > :last-child {
+          &.line {
+            width: 100%;
+          }
+          position: absolute;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+          bottom: 0;
+          position: absolute;
+          right: 0;
+        }
+      }
+    }
+  }
+}

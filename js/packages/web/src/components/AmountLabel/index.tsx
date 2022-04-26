@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Statistic } from 'antd';
-import { useSolPrice, useAllSplPrices } from '../../contexts';
 import { formatAmount, formatUSD, WRAPPED_SOL_MINT } from '@oyster/common';
 import { TokenCircle } from '../Custom';
 import { TokenInfo } from '@solana/spl-token-registry';
@@ -38,53 +37,17 @@ export const AmountLabel = (props: IAmountLabel) => {
     formattedAmount = formatAmount(amount);
   }
 
-  const solPrice = useSolPrice();
-  const altSplPrice = useAllSplPrices().filter(
-    a => a.tokenMint == tokenInfo?.address,
-  )[0]?.tokenPrice;
-  const tokenPrice =
-    tokenInfo?.address == WRAPPED_SOL_MINT.toBase58() ? solPrice : altSplPrice;
-
-  const [priceUSD, setPriceUSD] = useState<number | undefined>(undefined);
-
-  useEffect(() => {
-    setPriceUSD(tokenPrice * amount);
-  }, [amount, tokenPrice, altSplPrice]);
+  useEffect(() => {}, [amount]);
 
   const PriceNaN = isNaN(amount);
 
   return (
-    <div style={{ display: 'flex', ...containerStyle }}>
+    <div style={{ ...containerStyle }}>
       {PriceNaN === false && (
-        <Statistic
-          style={style}
-          className="create-statistic"
-          title={title || ''}
-          value={`${formattedAmount} ${displaySymbol || ''}`}
-          prefix={
-            customPrefix || (
-              <TokenCircle
-                iconSize={iconSize}
-                iconFile={
-                  tokenInfo?.logoURI == '' ? undefined : tokenInfo?.logoURI
-                }
-              />
-            )
-          }
-        />
-      )}
-      {displayUSD && (
-        <div className="usd">
-          {PriceNaN === false ? (
-            priceUSD ? (
-              formatUSD.format(priceUSD)
-            ) : (
-              '$N/A'
-            )
-          ) : (
-            <div className="placebid">{ended ? 'N/A' : 'Place Bid'}</div>
-          )}
-        </div>
+		<div className='flex-row flex-align-center'>
+			<img src={`/assets/hair.png`} className='amount-label-token-icon' style={{filter: `grayscale(${ended ? 100 : 0}%)`}} />
+			<div className={`amount-label-amount amount-label-${ended ? 'end': 'live'}`}>{formattedAmount}</div>
+		</div>
       )}
     </div>
   );

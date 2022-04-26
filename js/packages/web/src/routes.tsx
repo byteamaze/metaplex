@@ -24,6 +24,7 @@ export function Routes() {
   const shouldEnableNftPacks = process.env.NEXT_ENABLE_NFT_PACKS === 'true';
   return (
     <>
+	<div>
       <HashRouter basename={'/'}>
         <Providers>
           <Switch>
@@ -86,6 +87,7 @@ export function Routes() {
           </Switch>
         </Providers>
       </HashRouter>
+	</div>
     </>
   );
 }

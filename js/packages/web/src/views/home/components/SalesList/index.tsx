@@ -1,6 +1,5 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Col, Layout, Row, Tabs } from 'antd';
-import { Link } from 'react-router-dom';
 import React, { useMemo, useState } from 'react';
 
 import { useMeta } from '../../../../contexts';
@@ -10,6 +9,7 @@ import { HowToBuyModal } from '../../../../components/HowToBuyModal';
 
 import { useAuctionsList } from './hooks/useAuctionsList';
 import { AuctionRenderCard } from '../../../../components/AuctionRenderCard';
+import { CommonButton } from '../../../../components/CommonButton';
 
 const { TabPane } = Tabs;
 const { Content } = Layout;
@@ -41,64 +41,27 @@ export const SalesListView = (props: { collectionMintFilter?: string }) => {
 
   return (
     <>
-      {!props.collectionMintFilter && (
-        <Banner
-          src="/main-banner.svg"
-          headingText="The amazing world of Metaplex."
-          subHeadingText="Buy exclusive Metaplex NFTs."
-          actionComponent={<HowToBuyModal buttonClassName="secondary-btn" />}
-          useBannerBg
-        />
-      )}
+      {!props.collectionMintFilter && (<Banner src="../assets/auction_header.png" />)}
       <Layout>
-        <Content style={{ display: 'flex', flexWrap: 'wrap' }}>
-          <Col style={{ width: '100%', marginTop: 32 }}>
-            <Row>
-              <Tabs
-                activeKey={activeKey}
-                onTabClick={key => setActiveKey(key as LiveAuctionViewState)}
-              >
-                <TabPane
-                  tab={
-                    <>
-                      <span className="live"></span> Live
-                    </>
-                  }
-                  key={LiveAuctionViewState.All}
-                ></TabPane>
-                {hasResaleAuctions && (
-                  <TabPane
-                    tab="Secondary Marketplace"
-                    key={LiveAuctionViewState.Resale}
-                  ></TabPane>
-                )}
-                <TabPane tab="Ended" key={LiveAuctionViewState.Ended}></TabPane>
-                {connected && (
-                  <TabPane
-                    tab="Participated"
-                    key={LiveAuctionViewState.Participated}
-                  ></TabPane>
-                )}
-                {connected && (
-                  <TabPane
-                    tab="My Live Auctions"
-                    key={LiveAuctionViewState.Own}
-                  ></TabPane>
-                )}
-              </Tabs>
+        <Content style={{ display: 'flex', flexWrap: 'wrap' }} className='sale-list-content'>
+          <Col style={{ width: '100%'}}>
+		    <div className='sale-list-content-title'>DUSTILE'S</div>
+			{!isLoading &&
+            <Row style={{ margin: '30px 0 10px 0'}}>
+                <div onClick={() => setActiveKey(LiveAuctionViewState.All)}>
+					<CommonButton title='Live' width='105px' height='44px' theme={(activeKey === LiveAuctionViewState.All) ? "green" : "dark"} />
+				</div>
+                <div onClick={() => setActiveKey(LiveAuctionViewState.Ended)} style={{marginLeft: '20px'}}>
+				  <CommonButton title='Ended' width='105px' height='44px' theme={(activeKey === LiveAuctionViewState.Ended) ? "green" : "dark"} />
+				</div>
             </Row>
+			}
             <Row>
               <div className="artwork-grid">
-                {isLoading &&
-                  [...Array(10)].map((_, idx) => <CardLoader key={idx} />)}
+                {/*isLoading && [...Array(10)].map((_, idx) => <CardLoader key={idx} />)*/}
                 {!isLoading &&
                   filteredAuctions.map(auction => (
-                    <Link
-                      key={auction.auction.pubkey}
-                      to={`/auction/${auction.auction.pubkey}`}
-                    >
-                      <AuctionRenderCard auctionView={auction} />
-                    </Link>
+                      <AuctionRenderCard auctionView={auction} key={auction.auction.pubkey} />
                   ))}
               </div>
             </Row>

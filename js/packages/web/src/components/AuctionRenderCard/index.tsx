@@ -5,9 +5,16 @@ import { AuctionView, useArt, useCreators } from '../../hooks';
 import { AmountLabel } from '../AmountLabel';
 import { MetaAvatar } from '../MetaAvatar';
 import { AuctionCountdown } from '../AuctionNumbers';
+import { Link } from 'react-router-dom';
 
+import { isAuctionEnded } from '../../utils/utils';
 import { useAuctionStatus } from './hooks/useAuctionStatus';
 import { useTokenList } from '../../contexts/tokenList';
+import { CommonButton } from '../CommonButton';
+import {
+  AuctionState,
+  BidStateType,
+} from '@oyster/common';
 
 export interface AuctionCard extends CardProps {
   auctionView: AuctionView;
@@ -19,6 +26,7 @@ export const AuctionRenderCard = (props: AuctionCard) => {
   const art = useArt(id);
   const creators = useCreators(auctionView);
   const name = art?.title || ' ';
+  const ended = auctionView.auction.info.state === AuctionState.Ended || auctionView.auction.info.ended();
 
   const tokenInfo = useTokenList().subscribedTokens.filter(
     m => m.address == auctionView.auction.info.tokenMint,
@@ -26,20 +34,9 @@ export const AuctionRenderCard = (props: AuctionCard) => {
   const { status, amount } = useAuctionStatus(auctionView);
 
   const card = (
-    <Card hoverable={true} className={`auction-render-card`} bordered={false}>
+    <div className={`auction-render-card rendner-card-${ended ? 'end' : 'live'}`}>
       <div className={'card-art-info'}>
         <div className="auction-gray-wrapper">
-          <div className={'card-artist-info'}>
-            <MetaAvatar
-              creators={creators.length ? [creators[0]] : undefined}
-            />
-            <span className={'artist-name'}>
-              {creators[0]?.name ||
-                creators[0]?.address?.substr(0, 6) ||
-                'Go to auction'}
-              ...
-            </span>
-          </div>
           <div className={'art-content-wrapper'}>
             <ArtContent
               className="auction-image no-events"
@@ -49,25 +46,55 @@ export const AuctionRenderCard = (props: AuctionCard) => {
             />
           </div>
           <div className={'art-name'}>{name}</div>
-          {!auctionView.isInstantSale && (
-            <div className="auction-info-container">
-              <div className={'info-message'}>ENDING IN</div>
-              <AuctionCountdown auctionView={auctionView} labels={false} />
-            </div>
-          )}
         </div>
       </div>
+	  
+	  {ended &&
+		<div style={{margin: '0 0 20px 12px'}} className="flex-row flex-align-center">
+			<div style={{fontSize: '15px', opacity: 0.7}}>Winning Bid</div>
+			<AmountLabel
+			  containerStyle={{ flexDirection: 'row', marginLeft: '15px'}}
+			  ended={ended}
+			  title={status}
+			  amount={amount}
+			/>
+		</div>
+	  }
+	  
+	  {!ended &&
       <div className="card-bid-info">
-        <span className={'text-uppercase info-message'}>{status}</span>
-        <AmountLabel
-          containerStyle={{ flexDirection: 'row' }}
-          title={status}
-          amount={amount}
-          iconSize={24}
-          tokenInfo={tokenInfo}
-        />
+		<div className='flex-column alc-countdown-card'>
+		  <div className='flex-row w-100'>
+			<div className='alc-countdown-label' style={{width: '65%'}}>COUNTDOWN</div>
+			<div className='alc-countdown-label'>Current bid</div>
+		  </div>
+		  <div className='flex-row w-100' style={{marginTop: '5px'}}>
+			<div className='countdown' style={{width: '65%'}}>
+				{!auctionView.isInstantSale && (
+				  <div className="auction-info-container">
+					<AuctionCountdown auctionView={auctionView} labels={false} />
+				  </div>
+				)}
+			</div>
+			<AmountLabel
+			  containerStyle={{ flexDirection: 'row'}}
+			  title={status}
+			  amount={amount}
+			/>
+		  </div>
+		</div>
       </div>
-    </Card>
+	  }
+	  
+	  <Link
+		style={{width: '100%'}}
+	    to={`/auction/${auctionView.auction.pubkey}`}
+	  >
+		  <div className='w-100 flex-row-center'>
+			<CommonButton title={ended ? 'VIEW WINNERS' : 'VIEW'} height='48px' width='210px'/>
+		  </div>
+	  </Link>
+    </div>
   );
 
   return card;

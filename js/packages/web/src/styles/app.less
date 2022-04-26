@@ -1,14 +1,24 @@
 @import '~antd/es/style/themes/dark.less';
 @import '~antd/dist/antd.dark.less';
+@import './custom.less';
+
+@font-face {
+    font-family: 'Bryndan Write';
+    src: url('/font/bryndanwrite-webfont.woff2') format('woff2'),
+         url('/font/bryndanwrite-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 
 html {
   overflow-y: scroll;
   width: 100%;
   overflow-x: hidden;
 }
+
 #root {
   height: 100%;
-  font-family: 'Graphik Web', sans-serif;
+  font-family: 'Bryndan Write';
 }
 
 #root::before {
@@ -21,17 +31,6 @@ html {
   filter: grayscale(100%);
   background-repeat: no-repeat;
   background-size: cover;
-}
-
-body {
-  --row-highlight: @background-color-base;
-  margin: 0;
-
-  font-style: normal;
-  font-weight: normal;
-  font-family: 'Graphik Web' !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .no-events {
@@ -54,8 +53,7 @@ img:not([src]) {
   width: 100%;
 }
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .app-logo {
@@ -422,3 +420,4 @@ model-viewer {
     }
   }
 }
+

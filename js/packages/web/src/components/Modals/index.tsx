@@ -14,6 +14,7 @@ export const ModalLayout: React.FC<ModalProps> = ({
 }) => {
   return (
     <Modal
+	  mask={true}
       onCancel={onClose}
       footer={null}
       visible={isModalVisible}
