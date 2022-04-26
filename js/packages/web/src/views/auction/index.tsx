@@ -98,7 +98,7 @@ export const AuctionView = () => {
   const myPrice = myBids.length > 0 ? (myBids[0].info.lastBid.toNumber() / LAMPORTS_PER_MINT).toFixed(2) : null;
   const winnerIndex = auction?.auction.info.bidState.getWinnerIndex(walletPubkey || '');
   // const eligibleForOpenEdition = auction && eligibleForParticipationPrizeGivenWinningIndex(winnerIndex, auction, auction.myBidderMetadata, auction.myBidRedemption,);
-  const isWinner = (winnerIndex === 0 || winnerIndex > 0) && ended;
+  const isWinner = (winnerIndex != null) && ended;
   // console.log('eligibleForOpenEdition: ', eligibleForOpenEdition)
 
   const tokenInfo = useTokenList()?.subscribedTokens.filter(
@@ -219,7 +219,7 @@ export const AuctionView = () => {
 	  </CommonModal>
 	  
 	  <CommonModal visible={showCancelBidModal} title={showClaimModal ? 'Redeem purchase' : 'Cancellation bid'} closable={false}>
-		<AuctionCancelBid auctionView={auction} claim={showClaimModal} onCancel={() => setShowCancelBidModal(false)} />
+		<AuctionCancelBid auctionView={auction!} claim={showClaimModal} onCancel={() => setShowCancelBidModal(false)} />
 	  </CommonModal>
 	  
 	  <CommonModal
@@ -228,7 +228,7 @@ export const AuctionView = () => {
 		onCancel={() => setShowBidModal(false)}
         title="Place bid"
         centered>
-		  <AuctionCard auctionView={auction} hideDefaultAction={false} />
+		  <AuctionCard auctionView={auction!} hideDefaultAction={false} />
 	  </CommonModal>
 	</div>
     );

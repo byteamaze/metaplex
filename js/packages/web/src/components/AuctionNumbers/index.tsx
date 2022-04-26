@@ -15,8 +15,8 @@ import { useTokenList } from '../../contexts/tokenList';
 
 export const AuctionCountdown = (props: {
   auctionView: AuctionView;
-  labels: boolean;
-  wrap: boolean;
+  labels?: boolean;
+  wrap?: boolean;
 }) => {
   const { auctionView } = props;
   const state = useAuctionCountdown(auctionView);
@@ -94,7 +94,7 @@ export const AuctionNumbers = (props: {
         </>
       )}
       {!ended && !props.hideCountdown ? (
-        <AuctionCountdown auctionView={auctionView} labels={true} />
+        <AuctionCountdown auctionView={auctionView} labels={true} wrap={false} />
       ) : null}
     </div>
   );

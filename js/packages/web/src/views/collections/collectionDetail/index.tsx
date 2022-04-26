@@ -20,9 +20,6 @@ export const CollectionDetailView = () => {
       <div ref={ref} className={'collection-banner'}>
         <Banner
           src={data?.image ?? ''}
-          headingText={data?.name ?? ''}
-          subHeadingText={data?.description ?? ''}
-          useBannerBg
         />
       </div>
       <SalesListView collectionMintFilter={key} />

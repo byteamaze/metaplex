@@ -15,7 +15,6 @@ import { Link } from 'react-router-dom';
 
 import { useWallet } from '@solana/wallet-adapter-react';
 import { isAuctionEnded } from '../../utils/utils';
-import { useAuctionStatus } from './hooks/useAuctionStatus';
 import { useTokenList } from '../../contexts/tokenList';
 import { sendCancelBid } from '../../actions/cancelBid';
 import {
@@ -78,7 +77,7 @@ export const AuctionCancelBid = (props: AuctionCancel) => {
 	    // else setIsOpenPurchase(true);
 	  } catch (e) {
 	    console.error(e);
-	    setShowRedemptionIssue(true);
+	    setShowCancelIssue(true);
 		setLoading(false);
 	  }
   }
